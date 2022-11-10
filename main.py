@@ -35,6 +35,12 @@ for log, i in zip(lista_log, range(len(lista_log))):
     lista_log[i] = log[0:2] + log[3:]
 
 # salvare il file di log anonimizzato
+fout = open('./test1_anonimizzato.json','w')
+dump(lista_log, fout, indent=3)
+fout.close()
 
 # salvare la tabella (nome, codice)
+fout = open('./tabella_nome_codice.json','w')
+dump(tab, fout, indent=3)
+fout.close()
 

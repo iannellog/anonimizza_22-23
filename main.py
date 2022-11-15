@@ -13,7 +13,11 @@ from json import load, dump
 
 
 def leggi_file_JSON(fname):
-    # leggere il file di log fname (lista di liste di stringhe)
+    """
+    legge il file di log fname (lista di liste di stringhe in formato JSON)
+    :param fname: file da leggere
+    :return: l'oggetto Python corrispondente al contenuto del file JSON
+    """
     fin = open(fname)
     data_to_be_read = load(fin)
     fin.close()
@@ -21,7 +25,13 @@ def leggi_file_JSON(fname):
 
 
 def scrivi_file_JSON(fname, data_to_be_written, indent=3):
-    # salvare il file di log anonimizzato
+    """
+    salva l'oggetto data_to_be_written nel file fname in formato JSON
+    :param fname: file da scrivere
+    :param data_to_be_written: oggetto da salvare
+    :param indent: indentazione da usare nel file JSON
+    :return: nulla
+    """
     fout = open(fname, 'w')
     dump(data_to_be_written, fout, indent=indent)
     fout.close()

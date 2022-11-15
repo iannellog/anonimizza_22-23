@@ -10,11 +10,24 @@ tra nomi e codici assegnati
 """ 
 
 from json import load, dump
-  
-# leggere il file di log (lista di liste di stringhe)
-fin = open('./test_data/anonimizza_test1.json')
-lista_log = load(fin)
-fin.close()
+
+
+def leggi_file_JSON(fname):
+    # leggere il file di log fname (lista di liste di stringhe)
+    fin = open(fname)
+    data_to_be_read = load(fin)
+    fin.close()
+    return data_to_be_read
+
+
+def scrivi_file_JSON(fname, data_to_be_written, indent=3):
+    # salvare il file di log anonimizzato
+    fout = open(fname, 'w')
+    dump(data_to_be_written, fout, indent=indent)
+    fout.close()
+
+
+lista_log = leggi_file_JSON('./test_data/anonimizza_test1.json')
 
 # creare un dizionario vuoto che rappresenta la tabella (codice, nome)
 tab = {}
@@ -34,13 +47,7 @@ for log, i in zip(lista_log, range(len(lista_log))):
     # eliminare il campo "utente coinvolto"
     lista_log[i] = log[0:2] + log[3:]
 
-# salvare il file di log anonimizzato
-fout = open('./test1_anonimizzato.json','w')
-dump(lista_log, fout, indent=3)
-fout.close()
-
-# salvare la tabella (nome, codice)
-fout = open('./tabella_nome_codice.json','w')
-dump(tab, fout, indent=3)
-fout.close()
+# salvare i dati
+scrivi_file_JSON('results/test1_anonimizzato.json', lista_log)
+scrivi_file_JSON('results/tabella_nome_codice.json', tab)
 

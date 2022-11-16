@@ -7,7 +7,7 @@ Created on Thu Nov 10 09:00:02 2022
 
 Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e codici assegnati
 
-testare con in ingresso, file_input: './test_data/anonimizza_test1.json'
+
 """
 
 from json import load, dump
@@ -77,14 +77,21 @@ parser.add_argument('-o', '--file_output',
                     help='Path del file in cui salvare la lista anonimizzata; se non indicato, il default è ./results/test1_anonimizzato.json',
                     type=str,
                     default='./results/test1_anonimizzato.json')
+parser.add_argument('-i','--tab_input',
+                    help='Path del file da cui prendere la tabella (nome-codice)',
+                    type=str,
+                    default=None)
 
 args = parser.parse_args()
 
 # leggere il file di log (lista di liste di stringhe)
 lista_log = leggi_file(args.file_input)
 
-# creare un dizionario vuoto che rappresenta la tabella (nome, codice)
-tab = {}
+# se presente, leggere la tabella (nome, codice); altrimenti creare un dizionario vuoto
+if args.tab_input == None:
+    tab = {}
+else:
+    tab = leggi_file(args.tab_input)
 
 # per ogni log procedere all'anonimizzazione
 for log, i in zip(lista_log, range(len(lista_log))):

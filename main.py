@@ -84,11 +84,9 @@ parser.add_argument('-i','--tab_input',
 
 args = parser.parse_args()
 
-# leggere il file di log (lista di liste di stringhe)
-lista_log = leggi_file(args.file_input)
-
-# se presente, leggere la tabella (nome, codice); altrimenti creare un dizionario vuoto
-if args.tab_input == None:
+# lettura dei file di input
+lista_log = leggi_file(args.file_input) # lettura file di log (lista di liste di stringhe)
+if args.tab_input == None: # se presente, lettura della tabella; altrimenti crearne una vuota
     tab = {}
 else:
     tab = leggi_file(args.tab_input)
@@ -102,8 +100,6 @@ for log, i in zip(lista_log, range(len(lista_log))):
     # eliminare il campo "utente coinvolto"
     lista_log[i] = log[0:2] + log[3:]
 
-# salvare il file di log anonimizzato
+# salvare il file di log anonimizzato e la tabella
 scrivi_file(args.file_output, lista_log)
-
-# salvare la tabella (nome, codice)
 scrivi_file(args.tab_output, tab)

@@ -61,8 +61,10 @@ Il programma può essere lanciato da riga di comando con le segiuenti opzioni:
       -i TAB_INPUT, --tab_input TAB_INPUT
                             Path del file da cui prendere la tabella (nome-codice)
                         
-Nella directory `results` sono forniti due file da anonimizzare. Per testare le funzioni sopra descritte usare i comandi:
+Nella directory `results` sono forniti due file da anonimizzare. Per testare le funzioni sopra descritte usare il comando:
 
     python main.py ./test_data/anonimizza_test1.json -o ./results/anonimizzato_test1.json -t ./results/tabella_nome_codice.json
+
+seguito dal comando:
 
     python main.py ./test_data/anonimizza_test2.json -o ./results/anonimizzato_test2.json -i ./results/tabella_nome_codice.json 

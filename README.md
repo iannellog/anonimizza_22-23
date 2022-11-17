@@ -43,10 +43,6 @@ I sottoprogrammi dovrebbero essere definiti in modo tale che sia facile successi
 
 Il programma può essere lanciato da riga di comando con le segiuenti opzioni:
 
-usage: main.py [-h] [-t TAB_OUTPUT] [-o FILE_OUTPUT] [-i TAB_INPUT] file_input
-
-Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e codici assegnati
-
     usage: main.py [-h] [-t TAB_OUTPUT] [-o FILE_OUTPUT] [-i TAB_INPUT] file_input
     
     Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e codici assegnati

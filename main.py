@@ -5,71 +5,104 @@ Created on Thu Nov 10 09:00:02 2022
 
 @author: iannello
 
-programma che anonimizza una lista di log e salva la corrispondenza
-tra nomi e codici assegnati
-""" 
+Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e codici assegnati
+
+
+"""
 
 from json import load, dump
+from argparse import ArgumentParser
 
 import uuid
 
 
+DIGITS = 16
 
+def associazione_codice(nome, tabella):
+    """
+    Controlla se il nome (dell'utente del log) ha già una codifica nella tabella;
+    se assente, ne genera una nuova e univoca.
+    La codifica è gestita tramite un numero intero progressivo (codice) rappresentato con 4 cifre decimali:
+    il primo codice è 0001, l'ultimo codice possibile è 9999.
 
-def leggi_file_JSON(fname):
+    :param nome: str
+                    il nome dell'utente del log
+    :param tabella: dict di codici
+                    la tabella di massociazione ('nome':codice)
+    :return: None
     """
-    legge il file di log fname (lista di liste di stringhe in formato JSON)
-    :param fname: file da leggere
-    :return: l'oggetto Python corrispondente al contenuto del file JSON
+    # se il nome non è nella tabella
+    if nome not in tabella.keys():
+        # generare un nuovo codice e inserire la coppia (nome, codice) nella tabella
+        codice = int(uuid.uuid4().hex[:DIGITS], base=16)
+        tabella[nome] = codice
+    return
+
+def leggi_file(nome):
     """
-    fin = open(fname)
-    data_to_be_read = load(fin)
+    Legge il file JSON in "nome" e ne restituisce l'oggetto corrispondente
+
+    :param nome: str
+                file da leggere
+    :return: l'oggetto python corrispondente al contenuto del file json
+    """
+    fin = open(nome)
+    ogg_restituito = load(fin)
     fin.close()
-    return data_to_be_read
+    return ogg_restituito
 
+def scrivi_file(nome, ogg_da_scrivere, indent=3):
+    """
+    Scrive l'oggetto passato nel file JSON indicato da "nome", con indentazione eventualmente modificabile
 
-def scrivi_file_JSON(fname, data_to_be_written, indent=3):
+    :param nome: str
+                file su cui scrivere
+    :param ogg_da_scrivere: oggetto compatibile JSON da scrivere nel file
+    :param indent: int
+                parametro opzionale che indica l'indentazione con cui scrivere il file JSON
+    :return: None
     """
-    salva l'oggetto data_to_be_written nel file fname in formato JSON
-    :param fname: file da scrivere
-    :param data_to_be_written: oggetto da salvare
-    :param indent: indentazione da usare nel file JSON
-    :return: nulla
-    """
-    fout = open(fname, 'w')
-    dump(data_to_be_written, fout, indent=indent)
+    fout = open(nome, 'w')
+    dump(ogg_da_scrivere, fout, indent=indent)
     fout.close()
 
 
-lista_log = leggi_file_JSON('./test_data/anonimizza_test1.json')
+# import da riga di comando
+parser = ArgumentParser(description="Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e codici assegnati")
+parser.add_argument('file_input',
+                    help='Path del file da anonimizzare',
+                    type=str)
+parser.add_argument('-t', '--tab_output',
+                    help='Path del file in cui salvare la tabella; se non indicato, il default è ./results/tabella_nome_codice.json',
+                    type=str,
+                    default='./results/tabella_nome_codice.json')
+parser.add_argument('-o', '--file_output',
+                    help='Path del file in cui salvare la lista anonimizzata; se non indicato, il default è ./results/test1_anonimizzato.json',
+                    type=str,
+                    default='./results/test1_anonimizzato.json')
+parser.add_argument('-i','--tab_input',
+                    help='Path del file da cui prendere la tabella (nome-codice)',
+                    type=str,
+                    default=None)
 
-# creare un dizionario vuoto che rappresenta la tabella (codice, nome)
-tab = {}
+args = parser.parse_args()
 
-# inizializzare il generatore di codici
-# Con questo comando, andiamo a creare un codice numerico di 16 cifre differente
-# per ogni log da anonimizzare che presenti un nome differente. Ho preferito 
-# limitarmi a 16 cifre in quanto un ID di 32 cifre (numero di default) mi sembrava
-# troppo lungo per il caso d'uso, se si preferisce utilizzare ID di 32 cifre basta 
-# utilizzare l'espressione riportata sotto
-# codice = uuid.uuid4().int
-DIGITS = 16
-codice = int(uuid.uuid4().hex[:DIGITS], base=16) 
-
+# lettura dei file di input
+lista_log = leggi_file(args.file_input) # lettura file di log (lista di liste di stringhe)
+if args.tab_input == None: # se presente, lettura della tabella; altrimenti crearne una vuota
+    tab = {}
+else:
+    tab = leggi_file(args.tab_input)
 
 # per ogni log procedere all'anonimizzazione
 for log, i in zip(lista_log, range(len(lista_log))):
-    # se il nome non è nella tabella
-    if not log[1] in tab.keys():
-        # generare un nuovo codice e inserire la coppia (nome, codice) nella tabella
-        codice = int(uuid.uuid4().hex[:DIGITS], base=16)
-        tab[log[1]] = codice
-    # sostituire il nome con il codice
-    log[1] = tab[log[1]]
+    # controlla se il nome è nella tabella; se no lo aggiunge e assegna un codice univoco
+    associazione_codice(log[1], tab)
+    # sostituisce in lista_log il nome del log con il codice indicato in tabella
+    log[1] = tab[log[1]]  # modifica il valore anche nella lista_log
     # eliminare il campo "utente coinvolto"
     lista_log[i] = log[0:2] + log[3:]
 
-# salvare i dati
-scrivi_file_JSON('results/test1_anonimizzato.json', lista_log)
-scrivi_file_JSON('results/tabella_nome_codice.json', tab)
-
+# salvare il file di log anonimizzato e la tabella
+scrivi_file(args.file_output, lista_log)
+scrivi_file(args.tab_output, tab)

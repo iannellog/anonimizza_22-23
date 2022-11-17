@@ -11,6 +11,10 @@ tra nomi e codici assegnati
 
 from json import load, dump
 
+import uuid
+
+
+
 
 def leggi_file_JSON(fname):
     """
@@ -43,14 +47,22 @@ lista_log = leggi_file_JSON('./test_data/anonimizza_test1.json')
 tab = {}
 
 # inizializzare il generatore di codici
-codice = 0
+# Con questo comando, andiamo a creare un codice numerico di 16 cifre differente
+# per ogni log da anonimizzare che presenti un nome differente. Ho preferito 
+# limitarmi a 16 cifre in quanto un ID di 32 cifre (numero di default) mi sembrava
+# troppo lungo per il caso d'uso, se si preferisce utilizzare ID di 32 cifre basta 
+# utilizzare l'espressione riportata sotto
+# codice = uuid.uuid4().int
+DIGITS = 16
+codice = int(uuid.uuid4().hex[:DIGITS], base=16) 
+
 
 # per ogni log procedere all'anonimizzazione
 for log, i in zip(lista_log, range(len(lista_log))):
     # se il nome non è nella tabella
     if not log[1] in tab.keys():
         # generare un nuovo codice e inserire la coppia (nome, codice) nella tabella
-        codice += 1
+        codice = int(uuid.uuid4().hex[:DIGITS], base=16)
         tab[log[1]] = codice
     # sostituire il nome con il codice
     log[1] = tab[log[1]]

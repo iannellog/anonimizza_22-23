@@ -29,6 +29,7 @@ from json import load, dump
 from argparse import ArgumentParser
 import os
 
+
 def associazione_codice(nome: str, tabella: dict) -> None:
     """
     Controlla se il nome (dell'utente del log) ha già una codifica nella tabella;
@@ -51,7 +52,7 @@ def associazione_codice(nome: str, tabella: dict) -> None:
     return
 
 
-def leggi_file(nome: str) -> str:
+def leggi_file(nome: str):
     """
     Legge il file JSON in "nome" e ne restituisce l'oggetto corrispondente
 

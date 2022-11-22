@@ -12,16 +12,17 @@ di un file che era stato precedentemente anonimizzato con il main.
 from json import load, dump
 from argparse import ArgumentParser
 
-# def deassociazione_codice(codice, tabella):
-#     for key, values in tabella.items():
-#         if values == codice:
-#             name = key
-#     return name
+def deassociazione_codice(codice, tabella):
+    name = ' '
+    for key, values in tabella.items():
+       if values == codice:
+          name = key
+    return name
 #     """
 #     :param codice: str
 #                     il codice dell'utente del log
 #     :param tabella: dict di codici
-#                     la tabella di massociazione ('nome':codice)
+#                     la tabella di associazione ('nome':codice)
 #     :return: Nome utente
 #     """
 
@@ -81,9 +82,10 @@ tab = leggi_file(args.tab_input)
 
 # per ogni log procedere alla deanonimizzazione
 for log in lista_log:
-    for key, values in tab.items():
-        if values == log[1]:
-            log[1] = key
+    log[1] = deassociazione_codice(log[1], tab)
+    # for key, values in tab.items():
+    #     if values == log[1]:
+    #         log[1] = key
     # controlla se il codice è nella tabella
     # sostituisce in lista_log il codice del log con il nome originale
     # log[1] = deassociazione_codice(log[1], tab)  # modifica il valore anche nella lista_log

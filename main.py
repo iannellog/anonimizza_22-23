@@ -106,3 +106,4 @@ for log, i in zip(lista_log, range(len(lista_log))):
 # salvare il file di log anonimizzato e la tabella
 scrivi_file(args.file_output, lista_log)
 scrivi_file(args.tab_output, tab)
+

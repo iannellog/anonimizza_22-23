@@ -24,6 +24,8 @@ def deassociazione_codice(codice, tabella):
     for key, values in tabella.items():
        if values == codice:
           name = key
+       else:
+           name = '???'
     return name
 
 

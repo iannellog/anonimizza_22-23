@@ -13,18 +13,19 @@ from json import load, dump
 from argparse import ArgumentParser
 
 def deassociazione_codice(codice, tabella):
-    name = ' '
-    for key, values in tabella.items():
-       if values == codice:
-          name = key
-    return name
-#     """
+    """
 #     :param codice: str
 #                     il codice dell'utente del log
 #     :param tabella: dict di codici
 #                     la tabella di associazione ('nome':codice)
 #     :return: Nome utente
 #     """
+    name = ' '
+    for key, values in tabella.items():
+       if values == codice:
+          name = key
+    return name
+
 
 
 def leggi_file(nome):

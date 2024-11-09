@@ -9,6 +9,7 @@ Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e c
 
 
 """
+# commento di prova fia2425
 
 from json import load, dump
 from argparse import ArgumentParser

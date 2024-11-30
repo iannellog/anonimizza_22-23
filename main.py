@@ -16,7 +16,7 @@ from argparse import ArgumentParser
 import uuid
 
 
-DIGITS = 16
+DIGITS = 8
 
 def associazione_codice(nome, tabella):
     """
@@ -35,7 +35,7 @@ def associazione_codice(nome, tabella):
     if nome not in tabella.keys():
         # generare un nuovo codice e inserire la coppia (nome, codice) nella tabella
         codice = int(uuid.uuid4().hex[:DIGITS], base=16)
-        tabella[nome] = codice
+        tabella[nome] = str(codice)
     return
 
 def leggi_file(nome):

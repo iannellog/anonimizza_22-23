@@ -34,14 +34,14 @@ I sottoprogrammi dovrebbero essere definiti in modo tale che sia facile successi
 
 # Modifiche effettuate
 
-- Gli identificatori anomimi degli utenti sono generati usando il modulo uuid di Python e consistono in una stringa di 16 cifre; 
+- Gli identificatori anonimi degli utenti sono generati usando il modulo uuid di Python e consistono in una stringa di 16 cifre; 
 - I path dei file vengono passati sulla riga di comando
 - E' possibile anonimizzare un secondo file di log, usando i codici già assegnati per gli stessi utenti. 
 - E' stato aggiunto un secondo file di test per testare quest'ultima possibilità
 
-# Utilizzo del pfrogramma
+# Utilizzo del programma
 
-Il programma può essere lanciato da riga di comando con le segiuenti opzioni:
+Il programma può essere lanciato da riga di comando con le seguenti opzioni:
 
     usage: main.py [-h] [-t TAB_OUTPUT] [-o FILE_OUTPUT] [-i TAB_INPUT] file_input
     

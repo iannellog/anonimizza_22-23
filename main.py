@@ -7,6 +7,7 @@ Created on Thu Nov 10 09:00:02 2022
 
 Programma che anonimizza una lista di log e salva la corrispondenza tra nomi e codici assegnati
 
+
 """
 
 from json import load, dump
